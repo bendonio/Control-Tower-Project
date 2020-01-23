@@ -1,0 +1,29 @@
+file 2400 1579776645                                            
+version 2
+run deterministic-0-20200123-11:49:46-28628
+attr configname deterministic
+attr datetime 20200123-11:49:46
+attr experiment deterministic
+attr inifile omnetpp.ini
+attr iterationvars ""
+attr iterationvarsf ""
+attr measurement ""
+attr network Airport
+attr processid 28628
+attr repetition 0
+attr replication #0
+attr resultdir results
+attr runnumber 0
+attr seedset 0
+
+vector 0 Airport.parkingArea numPlane:vector ETV
+attr "" ""
+attr source numPlane
+vector 1 Airport.controlTower LandingQueueTime:vector ETV
+attr "" ""
+attr source LandingQueueTime
+0	574 527 1 46 30 1320 44 0 0 0 0
+1	1101 13 35 35 1000 1000 1 0 0 0 0
+0	1114 1243 50 153 1350 4080 92 1 3 171 381
+1	2357 41 73 150 2000 4000 3 0 0 0 0
+
