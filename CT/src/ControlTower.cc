@@ -30,7 +30,7 @@ void ControlTower::handleMessage(cMessage *msg){
 
     EV<< "Message is: " << msg->getName()<<endl;
 
-    if(msg->isSelfMessage()){ // test
+    if(msg->isSelfMessage()){
         if(strcmp(msg->getName(), "landing") == 0){       //Landing time expired, plane in the parking area
 
             Airplane *plane = check_and_cast<Airplane*>(runway);

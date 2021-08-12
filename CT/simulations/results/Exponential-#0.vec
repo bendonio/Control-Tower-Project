@@ -1,21 +1,31 @@
 version 2
-run Exponential-0-20210812-10:39:08-3080
+run Exponential-0-20210812-20:23:32-6084
 attr configname Exponential
-attr datetime 20210812-10:39:08
+attr datetime 20210812-20:23:32
 attr experiment Exponential
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network Airport
-attr processid 3080
+attr processid 6084
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
 param **.interarrivalDistr "\"exponential\""
-param **.interarrivalTime 500s
+param **.landingDistr "\"exponential\""
+param **.parkingDistr "\"exponential\""
+param **.takeoffDistr "\"exponential\""
+param **.interarrivalAvgRate 0.002
+param **.landingAvgRate 0.005
+param **.parkingAvgRate 0.005
+param **.takeoffAvgRate 0.005
+param **.interarrivalRNGIdx 0
+param **.landingRNGIdx 1
+param **.parkingRNGIdx 2
+param **.takeoffRNGIdx 3
 
 vector 0 Airport.controlTower LandingQueueTime:vector ETV
 attr "" ""
@@ -24,6 +34,18 @@ vector 1 Airport.parkingArea numPlane:vector ETV
 attr "" ""
 attr source numPlane
 0	2	397.937252282888	0
-0	7	859.548818018286	0
-1	5	753.644022116229	1
+0	11	859.548818018286	0
+0	17	2034.093790214565	899.02072886112
+0	29	2549.890494487797	1127.0578346929
+0	33	3089.186062077166	8.8972623180921
+1	5	505.858417585261	1
+1	6	620.396815510699	0
+1	18	2034.093790214565	1
+1	19	2075.027367069846	0
+1	23	2288.91883784655	1
+1	24	2294.172485215872	0
+1	34	3089.186062077166	1
+1	37	3089.208939601668	2
+1	38	3248.760524381723	1
+1	42	3625.489714168462	0
 

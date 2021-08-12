@@ -20,7 +20,17 @@ simple Airspace
 {
     parameters:
         string interarrivalDistr = default("constant");
-        double interarrivalTime @unit(s) = default(1800s);
+        string landingDistr = default("constant");
+    	string parkingDistr = default("constant");
+    	string takeoffDistr = default("constant");
+        double interarrivalAvgRate = default(0.0005);
+        double landingAvgRate = default(0.005);
+        double parkingAvgRate = default(0.005);
+        double takeoffAvgRate = default(0.005);
+        int interarrivalRNGIdx = default(0);
+        int landingRNGIdx = default(0);
+        int parkingRNGIdx = default(0);
+        int takeoffRNGIdx = default(0);
     gates:
         output outCT;
 }

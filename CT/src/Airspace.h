@@ -17,6 +17,7 @@
 #define __CONTROLTOWER_AIRSPACE_H_
 
 #include <omnetpp.h>
+#include "Airplane_m.h"
 
 using namespace omnetpp;
 
@@ -29,10 +30,21 @@ class Airspace : public cSimpleModule
     cMessage *airplane;
     int airplane_counter;
     std::string interarrivalDistr;
-    double interarrivalTime;
+    std::string landingDistr;
+    std::string parkingDistr;
+    std::string takeoffDistr;
+    int interarrivalRNGIdx;
+    int landingRNGIdx;
+    int parkingRNGIdx;
+    int takeoffRNGIdx;
+    double interarrivalAvgRate;
+    double landingAvgRate;
+    double parkingAvgRate;
+    double takeoffAvgRate;
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
+    virtual Airplane* spawnPlane();
     virtual void scheduleNextPlane(cMessage *plane);
 };
 
