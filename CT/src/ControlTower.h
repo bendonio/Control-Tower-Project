@@ -32,12 +32,13 @@ private:
     cQueue *take_off_queue;
     Airplane *runway;
     simsignal_t LandingQueueTimeSignal;
+    simsignal_t TakeoffQueueTimeSignal;
 
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
-    virtual bool check_for_landing(Airplane *plane);
-    virtual bool check_for_take_off(Airplane *plane);
+    virtual bool can_land_immediately();
+    virtual bool can_take_off_immediately();
     virtual void finish();
 };
 

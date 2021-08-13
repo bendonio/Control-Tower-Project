@@ -19,16 +19,23 @@ import Airspace;
 import ControlTower;
 import ParkingArea;
 
-network Airport{
-    
+network Airport
+{
+    @display("bgb=503,274");
     submodules:
-        airspace: Airspace;
-        controlTower: ControlTower;
-        parkingArea: ParkingArea;
-    
+        airspace: Airspace {
+            @display("p=406,120");
+        }
+        controlTower: ControlTower {
+            @display("p=251,120");
+        }
+        parkingArea: ParkingArea {
+
+            @display("p=76,120");
+        }
     connections:
         airspace.outCT --> controlTower.inAS;
-       	
-       	controlTower.outPA --> parkingArea.inCT;
-       	controlTower.inPA <-- parkingArea.outCT;
+
+        controlTower.outPA --> parkingArea.inCT;
+        controlTower.inPA <-- parkingArea.outCT;
 }

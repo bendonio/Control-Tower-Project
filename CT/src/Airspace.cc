@@ -36,7 +36,7 @@ void Airspace::initialize()
     takeoffAvgRate = par("takeoffAvgRate").doubleValue();
 
     if (interarrivalAvgRate <= 0 || landingAvgRate <= 0 || parkingAvgRate <= 0 || takeoffAvgRate <= 0)
-            throw new cException("Rate value can't be <= 0");
+        throw new cException("Rate value can't be <= 0");
 
     EV << "Mean interarrival time is: "<< 1 / interarrivalAvgRate << endl;
     // EV<<"The airplane will arrive in "<< (interarrivalTime/60) << "minutes (" << interarrivalTime<<" seconds)" << endl;
@@ -49,15 +49,7 @@ void Airspace::handleMessage(cMessage *msg)
 
         EV << "Airplane " << airplane_counter << " arrived, ready for landing." << endl;
 
-        // Notify the control tower that airplane is starting the landing//
-
-        double landingTime = uniform(0, 600);   // time for landing (seconds)
-        double parkingAreaTime = uniform(1000, 5400);  //time spent in parking area (seconds)
-        double takeOffTime = uniform(0, 600);   //time for take-off (seconds)
-
-        EV<< "The landing will take " << landingTime << "seconds (" << (landingTime/60) << " minutes)" << endl;
-        EV<< "The time spent in the parking area will be " << parkingAreaTime << "seconds (" << (parkingAreaTime/60) << " minutes, " <<(parkingAreaTime/3600) << "hours)" << endl;
-        EV<< "The take-off will take " << takeOffTime << "seconds (" << (takeOffTime/60) << " minutes)" << endl;
+        // Notify the control tower that airplane is starting the landing
 
         Airplane *notify = spawnPlane();
 
@@ -89,6 +81,10 @@ Airplane* Airspace::spawnPlane() {
         takeOffTime = 1 / takeoffAvgRate;
     }
 
+    EV<< "The landing will take " << landingTime << "seconds (" << (landingTime/60) << " minutes)" << endl;
+    EV<< "The time spent in the parking area will be " << parkingAreaTime << "seconds (" << (parkingAreaTime/60) << " minutes, " <<(parkingAreaTime/3600) << "hours)" << endl;
+    EV<< "The take-off will take " << takeOffTime << "seconds (" << (takeOffTime/60) << " minutes)" << endl;
+
     Airplane *airplane = new Airplane("Airplane info");
     airplane->setLandingTime(landingTime);
     airplane->setParkingAreaTime(parkingAreaTime);
@@ -96,6 +92,7 @@ Airplane* Airspace::spawnPlane() {
     airplane->setId(airplane_counter++);
     airplane->setTimeInsertedLQ(0);
     airplane->setTimeInsertedTQ(0);
+    airplane->setSchedulingPriority(0);
 
     return airplane;
 

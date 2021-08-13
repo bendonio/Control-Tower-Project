@@ -1,21 +1,25 @@
-file 668 1628792669                                             
+file 111196 1628870056                                          
 version 2
-run Deterministic-0-20210812-20:24:18-12540
+run Deterministic-0-20210813-17:54:13-25552
 attr configname Deterministic
-attr datetime 20210812-20:24:18
+attr datetime 20210813-17:54:13
 attr experiment Deterministic
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvarsf ""
 attr measurement ""
 attr network Airport
-attr processid 12540
+attr processid 25552
 attr repetition 0
 attr replication #0
 attr resultdir results
 attr runnumber 0
 attr seedset 0
 param **.interarrivalDistr "\"constant\""
+param **.interarrivalAvgRate "1 / 900"
+param **.landingAvgRate "1 / 900"
+param **.parkingAvgRate "1 / 900"
+param **.takeoffAvgRate "1 / 900"
 
 vector 0 Airport.controlTower LandingQueueTime:vector ETV
 attr "" ""
@@ -23,6 +27,10 @@ attr source LandingQueueTime
 vector 1 Airport.parkingArea numPlane:vector ETV
 attr "" ""
 attr source numPlane
-0	617 25 2 11 2000 4000 2 0 0 0 0
-1	642 24 5 6 2200 2400 2 0 1 1 1
+vector 2 Airport.controlTower TakeoffQueueTime:vector ETV
+attr "" ""
+attr source TakeoffQueueTime
+0	863 33125 2 15825 900 2590200 1440 0 1294200 931824000 8.045368416e+014
+1	33988 51467 6 15834 1800 2592000 2880 0 1 1440 1440
+2	85455 25739 14 15838 2700 2592000 1440 0 0 0 0
 
