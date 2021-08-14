@@ -19,9 +19,11 @@
 simple ControlTower{
     parameters:
         @signal[LandingQueueTime](type=double);
-		@statistic[LandingQueueTime](source="LandingQueueTime"; record=vector;);
-		@signal[TakeoffQueueTime](type=double);
-		@statistic[TakeoffQueueTime](source="TakeoffQueueTime"; record=vector;);
+        @statistic[LandingQueueTime](source="LandingQueueTime"; record=vector;);
+        @signal[TakeoffQueueTime](type=double);
+        @statistic[TakeoffQueueTime](source="TakeoffQueueTime"; record=vector;);
+        @signal[Throughput](type=double);
+        @statistic[Throughput](source="Throughput"; record=vector;);
     gates:
         input inAS;
         input inPA;

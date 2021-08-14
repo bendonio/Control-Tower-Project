@@ -23,8 +23,10 @@ void ControlTower::initialize()
     landing_queue = new cQueue("landing_queue");
     take_off_queue = new cQueue("take_off_queue");
     runway = nullptr;
+    planes_served = 0;
     LandingQueueTimeSignal = registerSignal("LandingQueueTime");    // Time spent in the landing queue
     TakeoffQueueTimeSignal = registerSignal("TakeoffQueueTime");    // Time spent in the takeoff queue
+    ThroughputSignal = registerSignal("Throughput");                // Throughput (# planes that have left the airport / time)
 }
 
 void ControlTower::handleMessage(cMessage *msg){
@@ -80,6 +82,8 @@ void ControlTower::handleMessage(cMessage *msg){
                     EV<<"Plane " << runway->getId() << " took-off." << endl;
                     delete runway;
                     runway = nullptr;
+                    planes_served++;
+                    emit(ThroughputSignal, planes_served / simTime().dbl());
 
                     cMessage *newmsg = new cMessage("check_queue"); //Sending a self-message to check the queues.
                     newmsg->setSchedulingPriority(3);

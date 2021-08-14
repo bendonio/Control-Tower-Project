@@ -31,8 +31,10 @@ private:
     cQueue *landing_queue;
     cQueue *take_off_queue;
     Airplane *runway;
+    int planes_served;
     simsignal_t LandingQueueTimeSignal;
     simsignal_t TakeoffQueueTimeSignal;
+    simsignal_t ThroughputSignal;
 
   protected:
     virtual void initialize();
