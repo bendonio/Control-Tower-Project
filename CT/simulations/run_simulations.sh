@@ -1,8 +1,19 @@
 #!/bin/sh
 
+# Usage:
+#     ./run_simulations.sh [config1 config2 ...]
+
 ini_file="omnetpp.ini"
 num_runs=$(awk -F "=" '/repeat/ {print $2}' "$ini_file" | tr -d ' ')
-configs=($(grep -oP '(?<=\[Config ).*?(?=\])' "$ini_file" | tr -d ' '))
+available_configs=$(grep -oP '(?<=\[Config ).*?(?=\])' "$ini_file" | tr -d ' ')
+
+# Check for specific configurations to run
+if [ "$#" -eq 0 ]
+then
+    configs=($available_configs)
+else
+    configs=($(echo ${available_configs[@]} $@ | sed 's/ /\n/g' | sort | uniq -d))
+fi
 
 # Run the simulations
 for config in "${configs[@]}"
