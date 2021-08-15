@@ -4,7 +4,6 @@
 #     ./run_simulations.sh [config1 config2 ...]
 
 ini_file="omnetpp.ini"
-num_runs=$(awk -F "=" '/repeat/ {print $2}' "$ini_file" | tr -d ' ')
 available_configs=$(grep -oP '(?<=\[Config ).*?(?=\])' "$ini_file" | tr -d ' ')
 
 # Check for specific configurations to run
@@ -18,6 +17,7 @@ fi
 # Run the simulations
 for config in "${configs[@]}"
 do
+    num_runs=$(../src/CT -u Cmdenv -c "$config" -q runs | grep -oP '(?<=Number of runs: ).[0-9]+')
     for (( i=0; i < $num_runs; i++ ))
     do
         ../src/CT -r $i -u Cmdenv -c "$config" -n ./:../src --debug-on-errors=false "$ini_file"
