@@ -32,6 +32,7 @@
  *     double takeOffTime;
  *     double timeInsertedLQ;
  *     double timeInsertedTQ;
+ *     double timeOfArrival;
  * }
  * </pre>
  */
@@ -44,6 +45,7 @@ class Airplane : public ::omnetpp::cMessage
     double takeOffTime;
     double timeInsertedLQ;
     double timeInsertedTQ;
+    double timeOfArrival;
 
   private:
     void copy(const Airplane& other);
@@ -74,6 +76,8 @@ class Airplane : public ::omnetpp::cMessage
     virtual void setTimeInsertedLQ(double timeInsertedLQ);
     virtual double getTimeInsertedTQ() const;
     virtual void setTimeInsertedTQ(double timeInsertedTQ);
+    virtual double getTimeOfArrival() const;
+    virtual void setTimeOfArrival(double timeOfArrival);
 };
 
 inline void doParsimPacking(omnetpp::cCommBuffer *b, const Airplane& obj) {obj.parsimPack(b);}

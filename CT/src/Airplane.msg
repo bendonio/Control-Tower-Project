@@ -23,4 +23,5 @@ message Airplane {
     double takeOffTime;
     double timeInsertedLQ;
     double timeInsertedTQ;
+    double timeOfArrival;
 }

@@ -187,6 +187,7 @@ Airplane::Airplane(const char *name, short kind) : ::omnetpp::cMessage(name,kind
     this->takeOffTime = 0;
     this->timeInsertedLQ = 0;
     this->timeInsertedTQ = 0;
+    this->timeOfArrival = 0;
 }
 
 Airplane::Airplane(const Airplane& other) : ::omnetpp::cMessage(other)
@@ -214,6 +215,7 @@ void Airplane::copy(const Airplane& other)
     this->takeOffTime = other.takeOffTime;
     this->timeInsertedLQ = other.timeInsertedLQ;
     this->timeInsertedTQ = other.timeInsertedTQ;
+    this->timeOfArrival = other.timeOfArrival;
 }
 
 void Airplane::parsimPack(omnetpp::cCommBuffer *b) const
@@ -225,6 +227,7 @@ void Airplane::parsimPack(omnetpp::cCommBuffer *b) const
     doParsimPacking(b,this->takeOffTime);
     doParsimPacking(b,this->timeInsertedLQ);
     doParsimPacking(b,this->timeInsertedTQ);
+    doParsimPacking(b,this->timeOfArrival);
 }
 
 void Airplane::parsimUnpack(omnetpp::cCommBuffer *b)
@@ -236,6 +239,7 @@ void Airplane::parsimUnpack(omnetpp::cCommBuffer *b)
     doParsimUnpacking(b,this->takeOffTime);
     doParsimUnpacking(b,this->timeInsertedLQ);
     doParsimUnpacking(b,this->timeInsertedTQ);
+    doParsimUnpacking(b,this->timeOfArrival);
 }
 
 int Airplane::getId() const
@@ -296,6 +300,16 @@ double Airplane::getTimeInsertedTQ() const
 void Airplane::setTimeInsertedTQ(double timeInsertedTQ)
 {
     this->timeInsertedTQ = timeInsertedTQ;
+}
+
+double Airplane::getTimeOfArrival() const
+{
+    return this->timeOfArrival;
+}
+
+void Airplane::setTimeOfArrival(double timeOfArrival)
+{
+    this->timeOfArrival = timeOfArrival;
 }
 
 class AirplaneDescriptor : public omnetpp::cClassDescriptor
@@ -363,7 +377,7 @@ const char *AirplaneDescriptor::getProperty(const char *propertyname) const
 int AirplaneDescriptor::getFieldCount() const
 {
     omnetpp::cClassDescriptor *basedesc = getBaseClassDescriptor();
-    return basedesc ? 6+basedesc->getFieldCount() : 6;
+    return basedesc ? 7+basedesc->getFieldCount() : 7;
 }
 
 unsigned int AirplaneDescriptor::getFieldTypeFlags(int field) const
@@ -381,8 +395,9 @@ unsigned int AirplaneDescriptor::getFieldTypeFlags(int field) const
         FD_ISEDITABLE,
         FD_ISEDITABLE,
         FD_ISEDITABLE,
+        FD_ISEDITABLE,
     };
-    return (field>=0 && field<6) ? fieldTypeFlags[field] : 0;
+    return (field>=0 && field<7) ? fieldTypeFlags[field] : 0;
 }
 
 const char *AirplaneDescriptor::getFieldName(int field) const
@@ -400,8 +415,9 @@ const char *AirplaneDescriptor::getFieldName(int field) const
         "takeOffTime",
         "timeInsertedLQ",
         "timeInsertedTQ",
+        "timeOfArrival",
     };
-    return (field>=0 && field<6) ? fieldNames[field] : nullptr;
+    return (field>=0 && field<7) ? fieldNames[field] : nullptr;
 }
 
 int AirplaneDescriptor::findField(const char *fieldName) const
@@ -414,6 +430,7 @@ int AirplaneDescriptor::findField(const char *fieldName) const
     if (fieldName[0]=='t' && strcmp(fieldName, "takeOffTime")==0) return base+3;
     if (fieldName[0]=='t' && strcmp(fieldName, "timeInsertedLQ")==0) return base+4;
     if (fieldName[0]=='t' && strcmp(fieldName, "timeInsertedTQ")==0) return base+5;
+    if (fieldName[0]=='t' && strcmp(fieldName, "timeOfArrival")==0) return base+6;
     return basedesc ? basedesc->findField(fieldName) : -1;
 }
 
@@ -432,8 +449,9 @@ const char *AirplaneDescriptor::getFieldTypeString(int field) const
         "double",
         "double",
         "double",
+        "double",
     };
-    return (field>=0 && field<6) ? fieldTypeStrings[field] : nullptr;
+    return (field>=0 && field<7) ? fieldTypeStrings[field] : nullptr;
 }
 
 const char **AirplaneDescriptor::getFieldPropertyNames(int field) const
@@ -506,6 +524,7 @@ std::string AirplaneDescriptor::getFieldValueAsString(void *object, int field, i
         case 3: return double2string(pp->getTakeOffTime());
         case 4: return double2string(pp->getTimeInsertedLQ());
         case 5: return double2string(pp->getTimeInsertedTQ());
+        case 6: return double2string(pp->getTimeOfArrival());
         default: return "";
     }
 }
@@ -526,6 +545,7 @@ bool AirplaneDescriptor::setFieldValueAsString(void *object, int field, int i, c
         case 3: pp->setTakeOffTime(string2double(value)); return true;
         case 4: pp->setTimeInsertedLQ(string2double(value)); return true;
         case 5: pp->setTimeInsertedTQ(string2double(value)); return true;
+        case 6: pp->setTimeOfArrival(string2double(value)); return true;
         default: return false;
     }
 }

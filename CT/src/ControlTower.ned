@@ -24,6 +24,8 @@ simple ControlTower{
         @statistic[TakeoffQueueTime](source="TakeoffQueueTime"; record=vector;);
         @signal[Throughput](type=double);
         @statistic[Throughput](source="Throughput"; record=vector;);
+        @signal[ResponseTime](type=double);
+        @statistic[ResponseTime](source="ResponseTime"; record=vector;);
     gates:
         input inAS;
         input inPA;

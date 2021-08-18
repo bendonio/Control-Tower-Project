@@ -35,6 +35,7 @@ private:
     simsignal_t LandingQueueTimeSignal;
     simsignal_t TakeoffQueueTimeSignal;
     simsignal_t ThroughputSignal;
+    simsignal_t ResponseTimeSignal;
 
   protected:
     virtual void initialize();

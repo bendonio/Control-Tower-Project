@@ -81,6 +81,8 @@ Airplane* Airspace::spawnPlane() {
         takeOffTime = 1 / takeoffAvgRate;
     }
 
+
+
     EV<< "The landing will take " << landingTime << "seconds (" << (landingTime/60) << " minutes)" << endl;
     EV<< "The time spent in the parking area will be " << parkingAreaTime << "seconds (" << (parkingAreaTime/60) << " minutes, " <<(parkingAreaTime/3600) << "hours)" << endl;
     EV<< "The take-off will take " << takeOffTime << "seconds (" << (takeOffTime/60) << " minutes)" << endl;
@@ -93,6 +95,9 @@ Airplane* Airspace::spawnPlane() {
     airplane->setTimeInsertedLQ(0);
     airplane->setTimeInsertedTQ(0);
     airplane->setSchedulingPriority(0);
+
+    // Saving arrival time for getting statistics
+    airplane->setTimeOfArrival(simTime().dbl());
 
     return airplane;
 

@@ -27,6 +27,7 @@ void ControlTower::initialize()
     LandingQueueTimeSignal = registerSignal("LandingQueueTime");    // Time spent in the landing queue
     TakeoffQueueTimeSignal = registerSignal("TakeoffQueueTime");    // Time spent in the takeoff queue
     ThroughputSignal = registerSignal("Throughput");                // Throughput (# planes that have left the airport / time)
+    ResponseTimeSignal = registerSignal("ResponseTime");            // Response time (for how long a plane has been in the system)
 }
 
 void ControlTower::handleMessage(cMessage *msg){
@@ -80,6 +81,9 @@ void ControlTower::handleMessage(cMessage *msg){
             } else{
                 if(strcmp(msg->getName(), "take-off") == 0){    //Take-off time expired, plane left the airport
                     EV<<"Plane " << runway->getId() << " took-off." << endl;
+
+                    emit(ResponseTimeSignal, simTime().dbl() - runway->getTimeOfArrival());
+
                     delete runway;
                     runway = nullptr;
                     planes_served++;
