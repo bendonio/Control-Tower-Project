@@ -3,7 +3,7 @@ last-configname=Exponential
 last-runnumber=0
 
 [RunModeProfiles]
-run-playback-speed=1
+run-playback-speed=2.4547089156850306
 run-min-playback-speed=0.01
 run-max-playback-speed=100
 run-min-animation-speed=nan
