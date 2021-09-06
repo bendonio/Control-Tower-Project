@@ -23,10 +23,10 @@ simple Airspace
         string landingDistr = default("constant");
     	string parkingDistr = default("constant");
     	string takeoffDistr = default("constant");
-        double interarrivalAvgRate = default(0.0005);
-        double landingAvgRate = default(0.005);
-        double parkingAvgRate = default(0.005);
-        double takeoffAvgRate = default(0.005);
+        double interarrivalTimeAvg = default(900);
+        double landingTimeAvg = default(900);
+        double parkingTimeAvg = default(900);
+        double takeoffTimeAvg = default(900);
         int interarrivalRNGIdx = default(0);
         int landingRNGIdx = default(0);
         int parkingRNGIdx = default(0);

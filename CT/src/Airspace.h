@@ -37,10 +37,10 @@ class Airspace : public cSimpleModule
     int landingRNGIdx;
     int parkingRNGIdx;
     int takeoffRNGIdx;
-    double interarrivalAvgRate;
-    double landingAvgRate;
-    double parkingAvgRate;
-    double takeoffAvgRate;
+    double interarrivalTimeAvg;
+    double landingTimeAvg;
+    double parkingTimeAvg;
+    double takeoffTimeAvg;
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

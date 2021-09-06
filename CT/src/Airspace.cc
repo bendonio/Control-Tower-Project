@@ -30,15 +30,12 @@ void Airspace::initialize()
     landingDistr = par("landingDistr").stringValue();
     parkingDistr = par("parkingDistr").stringValue();
     takeoffDistr = par("takeoffDistr").stringValue();
-    interarrivalAvgRate = par("interarrivalAvgRate").doubleValue();
-    landingAvgRate = par("landingAvgRate").doubleValue();
-    parkingAvgRate = par("parkingAvgRate").doubleValue();
-    takeoffAvgRate = par("takeoffAvgRate").doubleValue();
+    interarrivalTimeAvg = par("interarrivalTimeAvg").doubleValue();
+    landingTimeAvg = par("landingTimeAvg").doubleValue();
+    parkingTimeAvg = par("parkingTimeAvg").doubleValue();
+    takeoffTimeAvg = par("takeoffTimeAvg").doubleValue();
 
-    if (interarrivalAvgRate <= 0 || landingAvgRate <= 0 || parkingAvgRate <= 0 || takeoffAvgRate <= 0)
-        throw new cException("Rate value can't be <= 0");
-
-    EV << "Mean interarrival time is: "<< 1 / interarrivalAvgRate << endl;
+    EV << "Mean interarrival time is: "<< interarrivalTimeAvg << endl;
     // EV<<"The airplane will arrive in "<< (interarrivalTime/60) << "minutes (" << interarrivalTime<<" seconds)" << endl;
     scheduleNextPlane(airplane);
 }
@@ -64,21 +61,21 @@ Airplane* Airspace::spawnPlane() {
     double landingTime, parkingAreaTime, takeOffTime;
 
     if (landingDistr.compare("exponential") == 0) {
-        landingTime = exponential(1 / landingAvgRate, landingRNGIdx);
+        landingTime = exponential(landingTimeAvg, landingRNGIdx);
     } else {
-        landingTime = 1 / landingAvgRate;
+        landingTime = landingTimeAvg;
     }
 
     if (parkingDistr.compare("exponential") == 0) {
-        parkingAreaTime = exponential(1 / parkingAvgRate, parkingRNGIdx);
+        parkingAreaTime = exponential(parkingTimeAvg, parkingRNGIdx);
     } else {
-        parkingAreaTime = 1 / parkingAvgRate;
+        parkingAreaTime = parkingTimeAvg;
     }
 
     if (takeoffDistr.compare("exponential") == 0) {
-        takeOffTime = exponential(1 / takeoffAvgRate, takeoffRNGIdx);
+        takeOffTime = exponential(takeoffTimeAvg, takeoffRNGIdx);
     } else {
-        takeOffTime = 1 / takeoffAvgRate;
+        takeOffTime = takeoffTimeAvg;
     }
 
 
@@ -108,9 +105,9 @@ void Airspace::scheduleNextPlane(cMessage *plane) {
     double interval;
 
     if (interarrivalDistr.compare("exponential") == 0) {
-        interval = exponential(1 / interarrivalAvgRate, interarrivalRNGIdx);
+        interval = exponential(interarrivalTimeAvg, interarrivalRNGIdx);
     } else {
-        interval = 1 / interarrivalAvgRate;
+        interval = interarrivalTimeAvg;
     }
 
     scheduleAt(simTime() + interval, plane);
