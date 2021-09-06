@@ -30,4 +30,5 @@ cd results
 for config in "${configs[@]}"
 do
     scavetool x "$config"*.vec -o control_tower_"$config".csv
+    rm "$config"*.vec "$config"*.vci
 done
