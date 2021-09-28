@@ -3,9 +3,18 @@
 # Usage:
 #     ./run_simulations.sh [config1 config2 ...]
 
+build=true
 bin="../src/CT"
 ini_file="omnetpp.ini"
 available_configs=$(grep -oP '(?<=\[Config ).*?(?=\])' "$ini_file" | tr -d ' ')
+
+# Build
+if [ $build ]
+then
+    cd ../src
+    make
+    cd -
+fi
 
 # Check for specific configurations to run
 if [ "$#" -eq 0 ]

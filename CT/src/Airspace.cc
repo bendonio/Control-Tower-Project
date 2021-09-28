@@ -91,7 +91,7 @@ Airplane* Airspace::spawnPlane() {
     airplane->setId(airplane_counter++);
     airplane->setTimeInsertedLQ(0);
     airplane->setTimeInsertedTQ(0);
-    airplane->setSchedulingPriority(0);
+    airplane->setSchedulingPriority(3);
 
     // Saving arrival time for getting statistics
     airplane->setTimeOfArrival(simTime().dbl());

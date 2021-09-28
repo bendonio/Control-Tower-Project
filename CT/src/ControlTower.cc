@@ -41,11 +41,11 @@ void ControlTower::handleMessage(cMessage *msg){
             EV<< runway->getName()<< endl;
             EV<< "Plane " << plane->getId() << " landed !!\n Going to the parking area" << endl;
 
+            runway = nullptr;           // Free the runway
             cMessage *newmsg = new cMessage("check_queue"); //Sending a self-message to check the queues.
-            newmsg->setSchedulingPriority(3);
+            newmsg->setSchedulingPriority(0);
             scheduleAt(simTime() , newmsg);
             send(plane, "outPA");       //Sending the "plane" to the parking area
-            runway = nullptr;           // Free the runway
             delete msg;
 
         } else{
@@ -59,7 +59,7 @@ void ControlTower::handleMessage(cMessage *msg){
                        EV << "Runway occupied until " << simTime() + runway->getTakeOffTime() <<" for take-off" << endl;
 
                     cMessage *take_off = new cMessage("take-off");
-                    take_off->setSchedulingPriority(1);
+                    take_off->setSchedulingPriority(2);
                     scheduleAt(simTime() + runway->getTakeOffTime() , take_off);    //Only after the take-off we can check the queues again
                     emit(TakeoffQueueTimeSignal, simTime().dbl() - runway->getTimeInsertedTQ());   //statistic
 
@@ -72,7 +72,7 @@ void ControlTower::handleMessage(cMessage *msg){
                             EV << "Runway occupied until " << simTime() + runway->getLandingTime()<<" for landing" << endl;
 
                         cMessage *landing = new cMessage("landing");    //Only after the landing we can check the queues again
-                        landing->setSchedulingPriority(2);
+                        landing->setSchedulingPriority(4);
                         scheduleAt(simTime() + runway->getLandingTime() , landing);
                         emit(LandingQueueTimeSignal, simTime().dbl() - runway->getTimeInsertedLQ());   //statistic
                     }
@@ -90,7 +90,7 @@ void ControlTower::handleMessage(cMessage *msg){
                     emit(ThroughputSignal, planes_served / simTime().dbl());
 
                     cMessage *newmsg = new cMessage("check_queue"); //Sending a self-message to check the queues.
-                    newmsg->setSchedulingPriority(3);
+                    newmsg->setSchedulingPriority(0);
                     scheduleAt(simTime() , newmsg);
                     delete msg;
                 }
@@ -108,11 +108,11 @@ void ControlTower::handleMessage(cMessage *msg){
             if(can_land_immediately()){ //the plane can land immediately, do not put it in the queue
 
                 runway = info;  //Put the plane on the runway
-                EV<< "OK, Plane " << runway->getId() << " start landing" << endl;
+                EV<< "OK, Plane " << runway->getId() << " start landing (can land immediately)" << endl;
                 EV << "Runway occupied until " << simTime() + runway->getLandingTime() << " seconds" << endl;
 
                 cMessage *landing = new cMessage("landing");    //ma
-                landing->setSchedulingPriority(2);
+                landing->setSchedulingPriority(4);
                 scheduleAt(simTime() + runway->getLandingTime() , landing);
                 emit(LandingQueueTimeSignal, 0);    // The plane does not spend any time in the queue
 
@@ -139,7 +139,7 @@ void ControlTower::handleMessage(cMessage *msg){
                 EV << "Runway occupied until " << simTime() + runway->getTakeOffTime() << " seconds" << endl;
 
                 cMessage *take_off = new cMessage("take-off");
-                take_off->setSchedulingPriority(1);
+                take_off->setSchedulingPriority(2);
 
                 scheduleAt(simTime() + runway->getTakeOffTime() , take_off);
                 emit(TakeoffQueueTimeSignal, 0);
