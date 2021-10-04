@@ -36,7 +36,7 @@ void ParkingArea::handleMessage(cMessage *msg)
         EV<<"Notifying the control tower about the take-off.\n";
 
         numPlane--;
-        msg->setSchedulingPriority(1);
+        msg->setSchedulingPriority(0);
         send(msg, "outCT");
         emit(numPlaneSignal, numPlane);
 

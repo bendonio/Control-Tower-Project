@@ -31,6 +31,7 @@ private:
     cQueue *landing_queue;
     cQueue *take_off_queue;
     Airplane *runway;
+    bool ok_received;
     int planes_served;
     simsignal_t LandingQueueTimeSignal;
     simsignal_t TakeoffQueueTimeSignal;
