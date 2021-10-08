@@ -55,3 +55,7 @@ void ParkingArea::handleMessage(cMessage *msg)
 
     }
 }
+
+void ParkingArea::finish() {
+    recordScalar("#parking_area", numPlane);
+}

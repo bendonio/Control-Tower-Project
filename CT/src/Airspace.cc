@@ -113,3 +113,7 @@ void Airspace::scheduleNextPlane(cMessage *plane) {
     scheduleAt(simTime() + interval, plane);
 
 }
+
+void Airspace::finish() {
+    recordScalar("#spawned", airplane_counter);
+}

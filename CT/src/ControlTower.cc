@@ -23,7 +23,7 @@ void ControlTower::initialize()
     landing_queue = new cQueue("landing_queue");
     take_off_queue = new cQueue("take_off_queue");
     runway = nullptr;
-    bool ok_received = false;
+    ok_received = false;
     planes_served = 0;
     LandingQueueTimeSignal = registerSignal("LandingQueueTime");    // Time spent in the landing queue
     TakeoffQueueTimeSignal = registerSignal("TakeoffQueueTime");    // Time spent in the takeoff queue
@@ -36,6 +36,9 @@ void ControlTower::handleMessage(cMessage *msg){
     EV<< "Message is: " << msg->getName()<<endl;
 
     if(msg->isSelfMessage()){
+        if(strcmp(msg->getName(), "done") == 0){
+            EV << "Simulation ended." << endl;
+        }
         if(strcmp(msg->getName(), "landing") == 0){       //Landing time expired, plane in the parking area
 
             Airplane *plane = check_and_cast<Airplane*>(runway);
@@ -193,6 +196,13 @@ bool ControlTower::can_take_off_immediately(){
 }
 
 void ControlTower::finish() {
+    if (runway != nullptr)
+        recordScalar("#runway", 1);
+    else
+        recordScalar("#runway", 0);
+    recordScalar("#served", planes_served);
+    recordScalar("#landing_queue", landing_queue->getLength());
+    recordScalar("#takeoff_queue", take_off_queue->getLength());
     delete landing_queue;
     delete take_off_queue;
     delete runway;

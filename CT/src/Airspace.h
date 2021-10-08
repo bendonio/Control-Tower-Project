@@ -46,6 +46,7 @@ class Airspace : public cSimpleModule
     virtual void handleMessage(cMessage *msg);
     virtual Airplane* spawnPlane();
     virtual void scheduleNextPlane(cMessage *plane);
+    virtual void finish();
 };
 
 #endif
