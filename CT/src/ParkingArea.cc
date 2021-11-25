@@ -22,23 +22,31 @@ void ParkingArea::initialize()
 {
     numPlane = 0;
     numPlaneSignal = registerSignal("numPlane");
-    //stat = new cMessage("stat");
-    //scheduleAt(simTime() + 30, stat);
+    stat = new cMessage("stat");
+    scheduleAt(simTime() + 300, stat);
 }
 
 void ParkingArea::handleMessage(cMessage *msg)
 {
     if(msg->isSelfMessage()){
 
-        Airplane *info = check_and_cast<Airplane*>(msg);
-        int id = info->getId();
-        EV<<"Airplane " << id << " have to take off now.\n";
-        EV<<"Notifying the control tower about the take-off.\n";
+        if(strcmp(msg->getName(), "stat") == 0) {
 
-        numPlane--;
-        msg->setSchedulingPriority(0);
-        send(msg, "outCT");
-        emit(numPlaneSignal, numPlane);
+            emit(numPlaneSignal, numPlane);
+            scheduleAt(simTime() + 300, stat);
+
+        } else{
+
+            Airplane *info = check_and_cast<Airplane*>(msg);
+            int id = info->getId();
+            EV<<"Airplane " << id << " have to take off now.\n";
+            EV<<"Notifying the control tower about the take-off.\n";
+
+            numPlane--;
+            msg->setSchedulingPriority(0);
+            send(msg, "outCT");
+
+        }
 
     } else{
         Airplane *info = check_and_cast<Airplane*>(msg);
