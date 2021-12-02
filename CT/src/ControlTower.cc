@@ -25,10 +25,15 @@ void ControlTower::initialize()
     runway = nullptr;
     ok_received = false;
     planes_served = 0;
+    statistic = new cMessage("stat");
+    statistic->setSchedulingPriority(5);
+    scheduleAt(simTime() + 300, statistic);
     LandingQueueTimeSignal = registerSignal("LandingQueueTime");    // Time spent in the landing queue
     TakeoffQueueTimeSignal = registerSignal("TakeoffQueueTime");    // Time spent in the takeoff queue
     ThroughputSignal = registerSignal("Throughput");                // Throughput (# planes that have left the airport / time)
     ResponseTimeSignal = registerSignal("ResponseTime");            // Response time (for how long a plane has been in the system)
+    LQ_length_signal = registerSignal("LQ_length");
+    TQ_length_signal = registerSignal("TQ_length");
 }
 
 void ControlTower::handleMessage(cMessage *msg){
@@ -38,6 +43,11 @@ void ControlTower::handleMessage(cMessage *msg){
     if(msg->isSelfMessage()){
         if(strcmp(msg->getName(), "done") == 0){
             EV << "Simulation ended." << endl;
+        }
+        if(strcmp(msg->getName(), "stat") == 0) {
+            emit(LQ_length_signal, landing_queue->getLength());
+            emit(TQ_length_signal, take_off_queue->getLength());
+            scheduleAt(simTime() + 300, statistic);
         }
         if(strcmp(msg->getName(), "landing") == 0){       //Landing time expired, plane in the parking area
 

@@ -33,10 +33,13 @@ private:
     Airplane *runway;
     bool ok_received;
     int planes_served;
+    cMessage *statistic;
     simsignal_t LandingQueueTimeSignal;
     simsignal_t TakeoffQueueTimeSignal;
     simsignal_t ThroughputSignal;
     simsignal_t ResponseTimeSignal;
+    simsignal_t LQ_length_signal;
+    simsignal_t TQ_length_signal;
 
   protected:
     virtual void initialize();

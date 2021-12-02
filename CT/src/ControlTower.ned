@@ -26,6 +26,10 @@ simple ControlTower{
         @statistic[Throughput](source="Throughput"; record=vector;);
         @signal[ResponseTime](type=double);
         @statistic[ResponseTime](source="ResponseTime"; record=vector;);
+        @signal[LQ_length](type=int);
+        @statistic[LQ_length](source="LQ_length"; record=vector;);
+        @signal[TQ_length](type=int);
+        @statistic[TQ_length](source="TQ_length"; record=vector;);
     gates:
         input inAS;
         input inPA;
