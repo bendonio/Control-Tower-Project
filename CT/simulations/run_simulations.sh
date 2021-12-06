@@ -7,6 +7,7 @@ build=true
 bin="../src/CT"
 ini_file="omnetpp.ini"
 available_configs=$(grep -oP '(?<=\[Config ).*?(?=\])' "$ini_file" | tr -d ' ')
+max_runs_batch=180
 
 # Build
 if [ $build ]
@@ -28,16 +29,22 @@ fi
 for config in "${configs[@]}"
 do
     num_runs=$("$bin" -u Cmdenv -c "$config" -q runs | grep -oP '(?<=Number of runs: ).[0-9]+')
-    for (( i=0; i < $num_runs; i++ ))
+    iters=$((num_runs/max_runs_batch+1))
+    for (( i=0; i < $iters; i++ ))
     do
-        "$bin" -r $i -u Cmdenv -c "$config" -n ./:../src --debug-on-errors=false "$ini_file"
-    done
-done
+        for (( j=$i * $max_runs_batch; j < ($i + 1) * $max_runs_batch; j++ ))
+        do
+            if [ $j -eq $num_runs ]
+            then
+                break
+            fi
+            "$bin" -r $j -u Cmdenv -c "$config" -n ./:../src --debug-on-errors=false "$ini_file"
+        done
 
-# Aggregate the results
-cd results
-for config in "${configs[@]}"
-do
-    scavetool x "$config"*.vec "$config"*.sca -o control_tower_"$config".csv
-    rm "$config"*.vec "$config"*.vci "$config"*.sca
+        # Aggregate the results
+        cd results
+        scavetool x "$config"*.vec "$config"*.sca -o control_tower_"$config"_"$i".csv
+        rm "$config"*.vec "$config"*.vci "$config"*.sca
+        cd -
+    done
 done

@@ -25,6 +25,7 @@ void ControlTower::initialize()
     runway = nullptr;
     ok_received = false;
     planes_served = 0;
+    cumulative_runway_occupancy = 0;
     statistic = new cMessage("stat");
     statistic->setSchedulingPriority(5);
     scheduleAt(simTime() + 300, statistic);
@@ -45,9 +46,9 @@ void ControlTower::handleMessage(cMessage *msg){
             EV << "Simulation ended." << endl;
         }
         if(strcmp(msg->getName(), "stat") == 0) {
-            emit(LQ_length_signal, landing_queue->getLength());
-            emit(TQ_length_signal, take_off_queue->getLength());
-            scheduleAt(simTime() + 300, statistic);
+            //emit(LQ_length_signal, landing_queue->getLength());
+            //emit(TQ_length_signal, take_off_queue->getLength());
+            //scheduleAt(simTime() + 300, statistic);
         }
         if(strcmp(msg->getName(), "landing") == 0){       //Landing time expired, plane in the parking area
 
@@ -76,6 +77,7 @@ void ControlTower::handleMessage(cMessage *msg){
                     cMessage *take_off = new cMessage("take-off");
                     take_off->setSchedulingPriority(1);
                     scheduleAt(simTime() + runway->getTakeOffTime() , take_off);    //Only after the take-off we can check the queues again
+                    cumulative_runway_occupancy += runway->getTakeOffTime();
                     emit(TakeoffQueueTimeSignal, simTime().dbl() - runway->getTimeInsertedTQ());   //statistic
 
                 } else{
@@ -89,6 +91,7 @@ void ControlTower::handleMessage(cMessage *msg){
                         cMessage *landing = new cMessage("landing");    //Only after the landing we can check the queues again
                         landing->setSchedulingPriority(3);
                         scheduleAt(simTime() + runway->getLandingTime() , landing);
+                        cumulative_runway_occupancy += runway->getLandingTime();
                         emit(LandingQueueTimeSignal, simTime().dbl() - runway->getTimeInsertedLQ());   //statistic
                     }
                 }
@@ -131,6 +134,7 @@ void ControlTower::handleMessage(cMessage *msg){
                 cMessage *landing = new cMessage("landing");    //ma
                 landing->setSchedulingPriority(3);
                 scheduleAt(simTime() + runway->getLandingTime() , landing);
+                cumulative_runway_occupancy += runway->getLandingTime();
                 emit(LandingQueueTimeSignal, 0);    // The plane does not spend any time in the queue
 
             } else {
@@ -160,6 +164,7 @@ void ControlTower::handleMessage(cMessage *msg){
                 take_off->setSchedulingPriority(1);
 
                 scheduleAt(simTime() + runway->getTakeOffTime() , take_off);
+                cumulative_runway_occupancy += runway->getTakeOffTime();
                 emit(TakeoffQueueTimeSignal, 0);
 
             } else{ // Runway occupied and/or other planes queued for take-off
@@ -213,6 +218,7 @@ void ControlTower::finish() {
     recordScalar("#served", planes_served);
     recordScalar("#landing_queue", landing_queue->getLength());
     recordScalar("#takeoff_queue", take_off_queue->getLength());
+    recordScalar("ROT", cumulative_runway_occupancy / simTime());
     delete landing_queue;
     delete take_off_queue;
     delete runway;
