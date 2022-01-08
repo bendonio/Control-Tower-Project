@@ -49,6 +49,7 @@ void ControlTower::handleMessage(cMessage *msg){
             //emit(LQ_length_signal, landing_queue->getLength());
             //emit(TQ_length_signal, take_off_queue->getLength());
             //scheduleAt(simTime() + 300, statistic);
+            delete msg;
         }
         if(strcmp(msg->getName(), "landing") == 0){       //Landing time expired, plane in the parking area
 
