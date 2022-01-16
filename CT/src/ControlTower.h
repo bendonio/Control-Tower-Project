@@ -33,7 +33,8 @@ private:
     Airplane *runway;
     bool ok_received;
     int planes_served;
-    double cumulative_runway_occupancy;
+    double cumulative_landing_occupancy;
+    double cumulative_takeoff_occupancy;
     cMessage *statistic;
     simsignal_t LandingQueueTimeSignal;
     simsignal_t TakeoffQueueTimeSignal;

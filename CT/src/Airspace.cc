@@ -36,7 +36,6 @@ void Airspace::initialize()
     takeoffTimeAvg = par("takeoffTimeAvg").doubleValue();
 
     EV << "Mean interarrival time is: "<< interarrivalTimeAvg << endl;
-    // EV<<"The airplane will arrive in "<< (interarrivalTime/60) << "minutes (" << interarrivalTime<<" seconds)" << endl;
     scheduleNextPlane(airplane);
 }
 
